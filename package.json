@@ -18,7 +18,10 @@
   },
   "homepage": "https://github.com/soedeuce002/week-five-project#readme",
   "dependencies": {
+    "body-parser": "^1.17.2",
     "express": "^4.15.3",
-    "express-session": "^1.15.4"
+    "express-handlebars": "^3.0.0",
+    "express-session": "^1.15.4",
+    "fs": "0.0.1-security"
   }
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Mystery Word Game</title>
+
+    <style>
+    #wordSpace{
+      font-size: 36px;
+    }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to Mystery Word!!</h1>
+    <h1>You have {{turns}} guesses left</h1>
+
+    <div id='wordSpace'>
+      {{#word}}
+      {{.}}
+      {{/word}}
+    </div>
+    <form action='/guesses' method='post'>
+      <input type='text' name='guess' placeholder='Your guess goes here'>
+      <button>Submit Guess</button>
+    </form>
+
+    <h2>Letters guessed:</h2>
+      <ul>
+        {{#guesses}}
+          <li>{{.}}</li>
+        {{/guesses}}
+      </ul>
+  </body>
+</html>

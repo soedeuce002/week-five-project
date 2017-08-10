@@ -23,7 +23,11 @@
       <input type='text' name='guess' placeholder='Your guess goes here'>
       <button>Submit Guess</button>
     </form>
-
+    <div>
+      {{#errors}}
+        {{.}}
+      {{/errors}}
+    </div>
     <h2>Letters guessed:</h2>
       <ul>
         {{#guesses}}

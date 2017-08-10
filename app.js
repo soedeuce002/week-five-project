@@ -3,6 +3,7 @@ const expressHandlebars = require('express-handlebars');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const expressValidator = require('express-validator');
 const words = fs.readFileSync("/usr/share/dict/words", "utf-8").toLowerCase().split("\n");
 
 
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
+app.use(expressValidator());
 //configures sessions
 app.use(
   session({
@@ -63,6 +65,7 @@ app.use((req, res, next) => {
   //these things will show in the console only after a new session is established
   // console.log('mystery word: ', req.session.mysteryWord);
   console.log('number of turns:', req.session.turns);
+  console.log('word array', req.session.wordArray);
   // console.log('word length: ', req.session.wordLength);
   // console.log(req.session.blanks);
   next();
@@ -95,33 +98,69 @@ app.post('/guesses', (req, res) => {
   //think of req.body as the input box and .guesses because that's the name of the input
   //input field on the handlebars file.
   let guessedLetter = req.body.guess;
-  //do i need a for loop here to iterate over the req.session.blanks array?
-  //so i can access the index number?  or do i need to add a param?
-  for (let i = 0; i < req.session.wordLength; i++) {
-    if (guessedLetter === req.session.wordArray[i]) {
-      // add the letter to the __
-      console.log("blanks array", req.session.blanks)
 
-      req.session.blanks.splice(i, 1, guessedLetter)
+  //  req.checkBody('guessedLetter', 'You must enter a guess!').notEmpty();
+  //  req.checkBody('guessedLetter', 'You may only enter one letter per guess...').len(1, 1);
+  //
+  //  req.getValidationResult().then((result) => {
+  //      if (!result.isEmpty()) {
+  //      throw new Error(result.array().map((item) => item.msg).join(' | '));
+  //      } else if (req.session.notInWord.includes(guessedLetter) || req.session.blanks.includes(guessedLetter)) {
+  //        throw new Error('You have already guessed that letter...Enter a different letter');
+  //      } else {
+  //        console.log('No errors')
+  //      }
+  //    })
+  //
+  //   .then(() => {
+       //do i need a for loop here to iterate over the req.session.blanks array?
+      //so i can access the index number?  or do i need to add a param?
+      for (let i = 0; i < req.session.wordLength; i++) {
+        if (guessedLetter === req.session.wordArray[i]) {
+          // add the letter to the __
+          console.log("blanks array", req.session.blanks)
 
+          req.session.blanks.splice(i, 1, guessedLetter)
+
+        }
+      }
+
+      if (!req.session.wordArray.includes(guessedLetter)) {
+        req.session.notInWord.push(guessedLetter)
+        req.session.turns--
+          console.log("There are no " + guessedLetter + "'s... Guess again!")
+        console.log(req.session.notInWord);
+      }
+
+      if (req.session.blanks === req.session.wordArray) {
+        res.render('index', {
+          word: req.session.blanks,
+          guesses: req.session.notInWord,
+          turns: req.session.turns,
+          alert: ["You Win!"]
+        })
+      } else if (req.session.turns === 0) {
+        res.render('index', {
+          word: req.session.blanks,
+          guesses: req.session.notInWord,
+          turns: req.session.turns,
+          alert: ["You've used all your turns! Please try again..."]
+      })
     }
-  }
+      res.redirect('/');
+    });
 
-  if (!req.session.wordArray.includes(guessedLetter)) {
-    req.session.notInWord.push(guessedLetter)
-    req.session.turns--
-    console.log("There are no " + guessedLetter + "'s... Guess again!")
-    console.log(req.session.notInWord);
-  }
-  if(req.session.notInWord.includes(guessedLetter){
-    req.session.turns - 0;
-  })
-if (req.session.turns = 0){
-  alert("You ran out of turns!  Better luck next time...")
-}
+  // .catch((error) => {
+  //
+  //   res.render('home', {
+  //     errors: errors,
+  //     word: req.session.blanks,
+  //     guesses: req.session.notInWord,
+  //     turns: req.session.turns
+  //   })
+  // });
 
-  res.redirect('/');
-});
+
 
 app.listen(3000, () => {
 

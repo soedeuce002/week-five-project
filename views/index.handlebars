@@ -8,9 +8,41 @@
     #wordSpace{
       font-size: 36px;
     }
+    body{
+      background-color: darkcyan;
+      color: indigo;
+      text-align: center;
+    }
+    #container{
+      padding: 200px;
+    }
+
+    button {
+      background-color: orchid;
+      border-radius: 40px;
+      color: purple;
+      border: 1px solid purple;
+      height: 52px;
+      font-weight: bold;
+    }
+
+    input{
+      background-color: plum;
+      border: 1px solid purple;
+      border-radius: 40px;
+      height: 50px;
+      text-align: center;
+      color: purple;
+
+    }
+    input::placeholder{
+      color: mediumpurple;
+    }
+
     </style>
   </head>
   <body>
+    <section id=container>
     <h1>Welcome to Mystery Word!!</h1>
     <h1>You have {{turns}} guesses left</h1>
 
@@ -32,5 +64,6 @@
           <li>{{.}}</li>
         {{/guesses}}
       </ul>
+    </section>
   </body>
 </html>

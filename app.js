@@ -137,14 +137,14 @@ app.post('/guesses', (req, res) => {
           word: req.session.blanks,
           guesses: req.session.notInWord,
           turns: req.session.turns,
-          alert: ["You Win!"]
+          message: "You Win!"
         })
       } else if (req.session.turns === 0) {
         res.render('index', {
           word: req.session.blanks,
           guesses: req.session.notInWord,
           turns: req.session.turns,
-          alert: ["You've used all your turns! Please try again..."]
+          message: "You've used all your turns! Please try again..."
       })
     }
       res.redirect('/');
